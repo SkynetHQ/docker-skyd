@@ -1,5 +1,5 @@
 FROM debian:stretch-slim AS zip_downloader
-LABEL maintainer="NebulousLabs <devs@nebulous.tech>"
+LABEL maintainer="SkynetLabs <devs@siasky.net>"
 
 ARG SIA_VERSION="1.5.5"
 ARG SIA_PACKAGE="Sia-v${SIA_VERSION}-linux-arm64"
@@ -17,7 +17,7 @@ RUN apt-get update && \
     chmod +x qemu-aarch64-static
 
 FROM arm64v8/debian:stretch-slim
-LABEL maintainer="NebulousLabs <devs@nebulous.tech>"
+LABEL maintainer="SkynetLabs <devs@siasky.net>"
 
 ARG SIA_DIR="/sia"
 ARG SIA_DATA_DIR="/sia-data"

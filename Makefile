@@ -1,5 +1,5 @@
-name=sia-container
-version=1.5.5
+name=skyd-container
+version=1.6.0
 
 default: release
 
@@ -7,41 +7,41 @@ all: release alpine pi dev
 
 release:
 	docker build -f Dockerfile \
-		--build-arg SIA_VERSION=$(version) \
-		-t $(name) -t nebulouslabs/sia:$(version) -t nebulouslabs/sia:latest \
+		--build-arg SKYD_VERSION=$(version) \
+		-t $(name) -t skynetlabs/skyd:$(version) -t skynetlabs/skyd:latest \
 		.
 
 alpine:
 	docker build -f alpine/Dockerfile \
-		--build-arg SIA_VERSION=$(version) \
-		-t $(name) -t nebulouslabs/sia:alpine-$(version) -t nebulouslabs/sia:alpine-latest \
+		--build-arg SKYD_VERSION=$(version) \
+		-t $(name) -t skynetlabs/skyd:alpine-$(version) -t skynetlabs/skyd:alpine-latest \
 		.
 
 pi:
 	docker build -f pi/Dockerfile \
-		--build-arg SIA_VERSION=$(version) \
-		-t $(name) -t nebulouslabs/sia:pi-$(version) -t nebulouslabs/sia:pi-latest \
+		--build-arg SKYD_VERSION=$(version) \
+		-t $(name) -t skynetlabs/skyd:pi-$(version) -t skynetlabs/skyd:pi-latest \
 		.
 
 dev:
 	docker build -f dev/Dockerfile \
 		--build-arg "SHA=$(sha)" \
 		--build-arg "TAG=$(tag)" \
-		-t $(name) -t nebulouslabs/sia:dev \
+		-t $(name) -t skynetlabs/skyd:dev \
 		.
 
 dev-debian:
 	docker build -f dev-debian/Dockerfile \
 		--build-arg "SHA=$(sha)" \
 		--build-arg "TAG=$(tag)" \
-		-t $(name) -t nebulouslabs/sia:dev-debian \
+		-t $(name) -t skynetlabs/skyd:dev-debian \
 		.
 
 debug:
-	docker build -f debug/Dockerfile -t $(name) -t nebulouslabs/sia:debug .
+	docker build -f debug/Dockerfile -t $(name) -t skynetlabs/skyd:debug .
 
 ci:
-	docker build -f ci/Dockerfile -t $(name) -t nebulouslabs/sia:ci .
+	docker build -f ci/Dockerfile -t $(name) -t skynetlabs/skyd:ci .
 
 stop:
 	docker stop $(docker ps -a -q --filter "name=$(name)") && docker rm $(docker ps -a -q --filter "name=$(name)")

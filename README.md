@@ -1,7 +1,7 @@
 # docker-sia
 
-[![Build Status](https://travis-ci.org/nebulouslabs/docker-sia.svg?branch=master)](https://travis-ci.org/nebulouslabs/docker-sia) 
-[![Docker Pulls](https://img.shields.io/docker/pulls/nebulouslabs/sia.svg?maxAge=604800)](https://hub.docker.com/r/nebulouslabs/sia/) 
+[![Build Status](https://travis-ci.org/skynethq/docker-skyd.svg?branch=master)](https://travis-ci.org/skynethq/docker-skyd) 
+[![Docker Pulls](https://img.shields.io/docker/pulls/skynetlabs/sky.svg?maxAge=604800)](https://hub.docker.com/r/skynetlabs/skyd) 
 [![License](http://img.shields.io/:license-mit-blue.svg)](LICENSE)
 
 ## Supported Tags
@@ -26,19 +26,7 @@ it. This image is not meant to be run in production, it's meant to be a
 debugging and experimentation image.
 
 ### Versions
-* **1.5.5**: 1.5.5, alpine-1.5.5, pi-1.5.5, debug-1.5.5
-* **1.5.4**: 1.5.4, alpine-1.5.4, pi-1.5.4, debug-1.5.4
-* **1.5.3**: 1.5.3, alpine-1.5.3, pi-1.5.3, debug-1.5.3
-* **1.5.1**: 1.5.1, alpine-1.5.1, pi-1.5.1, debug-1.5.1
-* **1.5.0.4**: 1.5.0.4, alpine-1.5.0.4, pi-1.5.0.4, debug-1.5.0.4
-* **1.5.0.3**: 1.5.0.4, alpine-1.5.0.4, pi-1.5.0.4, debug-1.5.0.4
-* **1.5.0.2**: 1.5.0.4, alpine-1.5.0.4, pi-1.5.0.4, debug-1.5.0.4
-* **1.5.0.1**: 1.5.0.4, alpine-1.5.0.4, pi-1.5.0.4, debug-1.5.0.4
-* **1.5.0**: 1.5.0, alpine-1.5.0, pi-1.5.0
-* **1.4.11**: 1.4.11, alpine-1.4.11, pi-1.4.11
-* **1.4.10**: 1.4.10, alpine-1.4.10, pi-1.4.10
-* **1.4.8**: 1.4.8, alpine-1.4.8, pi-1.4.8
-* **1.4.7**: 1.4.7, alpine-1.4.7, pi-1.4.7
+* **1.6.0**: 1.6.0, alpine-1.6.0, pi-1.6.0, debug-1.6.0
 
 ## Usage
 
@@ -52,9 +40,12 @@ docker run \
   --publish 9982:9982 \
   --publish 9983:9983 \
   --publish 9984:9984 \
-  --name sia-container \
-   nebulouslabs/sia
+  --name skyd-container \
+   skynetlabs/skyd
 ```
+
+**NOTE:** the `sia` prefix for folders and environment variables is left for
+compatibility with previous instances using the `docker-sia` image.
 
 **Important**: Never publish port 9980 to all interfaces. This is a 
 security-sensitive API, so only expose it beyond 127.0.0.1 if you know what 
@@ -70,16 +61,16 @@ environment variables for the container using the `-e` option:
 `-e SIA_DATA_DIR=/new-sia-data-dir`  
 `-e SIAD_DATA_DIR=/new-siad-data-dir`
 
-Once the container is running, you can execute `siac` from within the container:
+Once the container is running, you can execute `skyc` from within the container:
 
 ```bash
-$ docker exec -it sia-container siac consensus
+$ docker exec -it skyd-container skyc consensus
 Synced: No
 Height: 3800
 Progress (estimated): 2.4%
 ```
 
-You can also call `siad` from outside the container:
+You can also call `skyd` from outside the container:
 
 ```bash
 $ curl -A "Sia-Agent" "http://localhost:9980/consensus"
@@ -88,7 +79,7 @@ $ curl -A "Sia-Agent" "http://localhost:9980/consensus"
 
 ## Logs
 
-If you are interested in `siad`'s logs you can start the container with the 
+If you are interested in `skyd`'s logs you can start the container with the 
 following option `--log-driver local` and docker will keep the logs on disk.
 More info [here](https://docs.docker.com/config/containers/logging/local).  
 
@@ -120,4 +111,4 @@ For more usage examples, see the blog post, ["Fun with Sia and Docker."](https:/
 ## Publishing a new version
 
 If you are looking for a howto on publishing a new version of this image, you
-can find one [here](https://github.com/NebulousLabs/docker-sia/blob/master/HOWTO.md).
+can find one [here](https://github.com/SkynetHQ/docker-skyd/blob/master/HOWTO.md).

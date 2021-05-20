@@ -8,6 +8,10 @@ ENV GO111MODULE on
 ARG SHA
 ARG TAG
 
+ARG SU_EXEC="su-exec-musl-static"
+ARG SU_EXEC_VERSION="1.3-skynetlabs-0.2.0"
+ARG SU_EXEC_RELEASE="https://github.com/SkynetLabs/su-exec/releases/download/${SU_EXEC_VERSION}/${SU_EXEC}"
+
 # Fetches the sha of the latest commit on the master branch that passed CI.
 # This is overriden by the manually supplied TAG and SHA values. That's done
 # in the Go code.
@@ -17,7 +21,10 @@ RUN SHA=`go run master_sha.go` && \
     git clone https://gitlab.com/NebulousLabs/Sia.git && \
     cd Sia && \
     git reset --hard $SHA && \
-    make release
+    make release && \
+    cd / && \
+    wget "$SU_EXEC_RELEASE" && \
+    cd -
 
 FROM debian:stretch-slim
 LABEL maintainer="NebulousLabs <devs@nebulous.tech>"
@@ -43,6 +50,13 @@ ENV SIA_MODULES gctwhr
 COPY --from=builder /go/bin/siac /go/bin/siad /usr/bin/
 COPY scripts/*.sh ./
 COPY scripts/logrotate-sia /etc/logrotate.d/sia
+
+# Preparation for su-exec
+ENV SU_EXEC="su-exec-musl-static"
+COPY --from=builder "/${SU_EXEC}" /usr/bin/
+RUN chmod +x /usr/bin/siac && \
+    chmod +x /usr/bin/siad && \
+    chmod +x "/usr/bin/${SU_EXEC}"
 
 EXPOSE 9980
 

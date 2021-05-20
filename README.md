@@ -86,6 +86,22 @@ $ curl -A "Sia-Agent" "http://localhost:9980/consensus"
 {"synced":false,"height":4690,"currentblock":"0000000000007d656e3bb0099737892b9073259cb05883b04c6f518fbf0faffb","target":[0,0,0,0,0,2,200,179,126,85,220,153,25,190,195,228,72,53,129,181,62,124,175,60,255,90,105,68,179,16,6,71],"difficulty":"101104922300609"}
 ```
 
+## Permissions
+
+From 20th May 2021 all `x86_64` debian and alpine images run `siad` with the
+permissions as are set on mounted `$SIA_DATA_DIR` volume. Previously `siad` was
+run with `root:root` permissions. If you want to change existing permissions,
+execute:
+```sh
+docker stop <sia-container-name-or-id>
+sudo chown <user>:<group> "$SIA_DATA_DIR" # Doesn't need to be recursive
+docker start <sia-container-name-or-id>
+```
+The container will recursively change permissions of `$SIA_DATA_DIR` to wanted
+`<user>:<group>` and will run `siad` with these permissions.
+
+This enables e.g. to use local tools to inspect Sia data.
+
 ## Logs
 
 If you are interested in `siad`'s logs you can start the container with the 

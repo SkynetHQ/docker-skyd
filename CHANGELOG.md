@@ -3,7 +3,7 @@
 ## 20th May 2021
 
 * All `x86_64` debian and alpine images now run siad inside docker container
-  run as a user:group who owns `$SIA_DATA_DIR`.
+  as a user:group who owns `$SIA_DATA_DIR`.
 
 ## 1.5.4 (Sia 1.5.4) - 12th January 2021
 

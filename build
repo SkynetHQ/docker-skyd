@@ -20,6 +20,10 @@ for DIR in ./ ./alpine ./pi
 do
   echo "Building image: $DIR"
 
+  if [ "$DIR" = "./pi" ]; then
+    "$DIR/hooks/pre_build"
+  fi
+
   docker build \
     --tag sia-image \
     -f $DIR/Dockerfile \

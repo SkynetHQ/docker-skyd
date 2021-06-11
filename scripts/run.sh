@@ -46,7 +46,7 @@ if [ "$(uname -m)" = "x86_64" ] && [ "$USER_ID" != "0" ]; then
   # We are using `su-exec` to start `siad` in order to change a user who
   # runs `siad` process (if we do not want to run as root).
   echo "Running Sia with permissions of a local user: $USER_ID:$GROUP_ID"
-  SU_EXEC_CMD="'$SU_EXEC' '$USER_ID:$GROUP_ID'"
+  SU_EXEC_CMD="$SU_EXEC $USER_ID:$GROUP_ID"
 else
   # Change sia-data ownership recursively back to root
   chown -R root:root "$SIA_DATA_DIR"

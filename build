@@ -18,37 +18,66 @@ cleanup_test_containers
 
 for DIR in ./ ./alpine ./pi
 do
-  echo "Building image: $DIR"
+  for SIA_USER in root $USER
+  do
+    echo "Building image $DIR with Sia user $SIA_USER"
 
-  docker build \
-    --tag sia-image \
-    -f $DIR/Dockerfile \
-    .
+    if [ "$DIR" = "./pi" ]; then
+      "$DIR/hooks/pre_build"
+    fi
 
-  export DUMMY_DATA_DIR=$(mktemp -d)
+    docker build \
+      --tag sia-image \
+      -f $DIR/Dockerfile \
+      .
 
-  # Run container in detached state
-  docker run \
-    --detach \
-    --publish 127.0.0.1:9988:9980 \
-    --volume "${DUMMY_DATA_DIR}:/sia-data" \
-    --env SIA_MODULES=cg \
-    --name sia-test-container \
-    sia-image
+    export DUMMY_DATA_DIR=$(mktemp -d)
 
-  sleep 5s
+    # Set Sia data dir owner for checking running Sia as local user
+    INITIAL_SIA_PERMISSIONS="$(id -u $SIA_USER):$(id -g $SIA_USER)"
+    docker run --rm -v "${DUMMY_DATA_DIR}:/sia-data" alpine chown "$INITIAL_SIA_PERMISSIONS" /sia-data
 
-  if [ -e "${DUMMY_DATA_DIR}/consensus" ]; then
-    (echo "Created consensus folder successfully" && exit 0)
-  else
-    (echo "Couldn't find consensus folder for image at $DIR" && \
-      docker logs sia-test-container && \
-      exit 1)
-  fi
+    # Run container in detached state
+    docker run \
+      --detach \
+      --publish 127.0.0.1:9988:9980 \
+      --volume "${DUMMY_DATA_DIR}:/sia-data" \
+      --env SIA_MODULES=cg \
+      --name sia-test-container \
+      sia-image
 
-  curl -A "Sia-Agent" "http://localhost:9988/consensus"
+    sleep 5s
 
-  docker rm -f sia-test-container
+    # Running in docker to avoid sudo
+    if docker exec sia-test-container stat /sia-data/consensus; then
+      (echo "Created consensus folder successfully" && exit 0)
+    else
+      (echo "Couldn't find consensus folder for image at $DIR" && \
+        docker logs sia-test-container && \
+        exit 1)
+    fi
+
+    curl -A "Sia-Agent" "http://localhost:9988/consensus"
+
+    # Check actual Sia permissions of Sia data dir, a subdirectory and a file
+    if [ "$DIR" != "./pi" ]; then
+      for PERMISSION_CHECK in "" "/consensus" "/consensus/consensus.db"
+      do
+        # Running in docker to avoid sudo
+        ACTUAL_SIA_PERMISSIONS=$(docker exec sia-test-container stat -c '%u:%g' /sia-data/${PERMISSION_CHECK})
+        if [ "$ACTUAL_SIA_PERMISSIONS" == "$INITIAL_SIA_PERMISSIONS" ]; then
+          (echo "Sia data permissions checked successfully" && exit 0)
+        else
+          (echo "Sia data permissions check failed" && \
+            echo "Actual permissions: $ACTUAL_SIA_PERMISSIONS" && \
+            echo "Expected permissions: $INITIAL_SIA_PERMISSIONS" && \
+            exit 1)
+        fi
+      done
+    fi
+
+    docker rm -f sia-test-container
+  done
 done
 
 cleanup_test_containers

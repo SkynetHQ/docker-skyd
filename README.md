@@ -1,6 +1,6 @@
 # docker-sia
 
-[![Build Status](https://travis-ci.org/skynethq/docker-skyd.svg?branch=master)](https://travis-ci.org/skynethq/docker-skyd) 
+[![Build Status](https://travis-ci.org/skynetlabs/docker-skyd.svg?branch=master)](https://travis-ci.org/skynetlabs/docker-skyd) 
 [![Docker Pulls](https://img.shields.io/docker/pulls/skynetlabs/sky.svg?maxAge=604800)](https://hub.docker.com/r/skynetlabs/skyd) 
 [![License](http://img.shields.io/:license-mit-blue.svg)](LICENSE)
 
@@ -111,4 +111,4 @@ For more usage examples, see the blog post, ["Fun with Sia and Docker."](https:/
 ## Publishing a new version
 
 If you are looking for a howto on publishing a new version of this image, you
-can find one [here](https://github.com/SkynetHQ/docker-skyd/blob/master/HOWTO.md).
+can find one [here](https://github.com/SkynetLabs/docker-skyd/blob/master/HOWTO.md).

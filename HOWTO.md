@@ -1,10 +1,10 @@
 # How To Publish a New Version
 
-This is a step-by-step guide to creating a new version of the official Sia Docker image.
+This is a step-by-step guide to creating a new version of the official Skyd Docker image.
 
 All examples will assume that we’re upgrading from version 1.4.11 to 1.5.0.
 
-1. Checkout the https://github.com/NebulousLabs/docker-sia/ repo.
+1. Checkout the https://github.com/SkynetLabs/docker-skyd/ repo.
 2. Update the version in all Dockerfiles except `dev`, as well as the `Makefile`.
 3. Add a new section to the `README` describing the new version.
 4. Push the update as a new commit to `master`, either directly or via a PR.
@@ -12,7 +12,7 @@ All examples will assume that we’re upgrading from version 1.4.11 to 1.5.0.
 `v1.5.0alpine` and push them as well.
 
 In order to verify that everything is OK go to the
-[Docker Hub build page](https://hub.docker.com/repository/docker/nebulouslabs/sia/builds) 
+[Docker Hub build page](https://hub.docker.com/repository/docker/skynetlabs/skyd/builds) 
 and make sure the builds for all the tags are either running or queued up. If 
 they are not, you have either not pushed the tags, or you've messed up the tag 
 format (you can see the exact regex for the tag format on the build page on 

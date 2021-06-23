@@ -1,5 +1,5 @@
 FROM golang:1.15
-LABEL maintainer="NebulousLabs <devs@nebulous.tech>"
+LABEL maintainer="SkynetLabs <devs@siasky.net>"
 
 ENV GOOS linux
 ENV GOARCH amd64
@@ -15,18 +15,20 @@ RUN apt-get update && \
     wget -O- -nv https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s v1.30.0 && \
     pip3 install codespell && \
     go get gitlab.com/NebulousLabs/analyze && \
-    git clone https://gitlab.com/NebulousLabs/Sia.git && \
-    cd Sia && \
+    git clone https://gitlab.com/SkynetLabs/skyd.git && \
+    cd skyd && \
     make release && \
     cd -
 
 # Setup the actual Sia environment.
+# NOTE: Leaving as sia and sia-data for backwards compatibility
 ARG SIA_DIR="/sia"
 ARG SIA_DATA_DIR="/sia-data"
 ARG SIAD_DATA_DIR="/sia-data"
 
 COPY ./debug/.vimrc ./debug/.bashrc scripts/*.sh ./
 
+# NOTE: Leaving as /mnt/sia for backwards compatibility
 ENV SIA_DATA_DIR "$SIA_DATA_DIR"
 ENV SIAD_DATA_DIR "$SIAD_DATA_DIR"
 ENV SIA_MODULES gctwhr

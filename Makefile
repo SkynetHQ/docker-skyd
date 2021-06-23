@@ -3,18 +3,12 @@ version=1.6.0
 
 default: release
 
-all: release alpine pi dev
+all: release pi dev
 
 release:
 	docker build -f Dockerfile \
 		--build-arg SKYD_VERSION=$(version) \
 		-t $(name) -t skynetlabs/skyd:$(version) -t skynetlabs/skyd:latest \
-		.
-
-alpine:
-	docker build -f alpine/Dockerfile \
-		--build-arg SKYD_VERSION=$(version) \
-		-t $(name) -t skynetlabs/skyd:alpine-$(version) -t skynetlabs/skyd:alpine-latest \
 		.
 
 pi:
@@ -28,13 +22,6 @@ dev:
 		--build-arg "SHA=$(sha)" \
 		--build-arg "TAG=$(tag)" \
 		-t $(name) -t skynetlabs/skyd:dev \
-		.
-
-dev-debian:
-	docker build -f dev-debian/Dockerfile \
-		--build-arg "SHA=$(sha)" \
-		--build-arg "TAG=$(tag)" \
-		-t $(name) -t skynetlabs/skyd:dev-debian \
 		.
 
 debug:

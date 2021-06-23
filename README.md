@@ -1,4 +1,4 @@
-# docker-sia
+# docker-skyd
 
 [![Build Status](https://travis-ci.org/skynetlabs/docker-skyd.svg?branch=master)](https://travis-ci.org/skynetlabs/docker-skyd) 
 [![Docker Pulls](https://img.shields.io/docker/pulls/skynetlabs/sky.svg?maxAge=604800)](https://hub.docker.com/r/skynetlabs/skyd) 
@@ -6,27 +6,19 @@
 
 ## Supported Tags
 
-### _Future Update Notice:_
-_When we reach version 1.6 we are going to switch our `dev` image from Alpine
-to Debian. Together with this we'll introduce a new `dev-alpine` image and 
-we'll remove `dev-debian`. In the end we'll have the same setup but the naming
-will be consistent with `sia:latest` (Debian) and `sia:alpine-latest` (Alpine)._
-
 ### Latest
 * **latest**: The latest official binary release.
-* **alpine-latest**: The latest official binary release based on Alpine Linux.
 * **pi-latest**: The latest official binary release for Raspberry Pi or any other 
 machine with an ARMv8 CPU.
 * **dev**: The latest version of the `master` branch that passed CI. Typically 
 unsuitable for production use, this image is aimed at people who want to tinker 
 and stay up to the date with the latest development.
-* **dev-debian**: The same as **dev** but based on `debian:stretch-slim`
 * **debug**: This is a special image that has a full development environment in 
 it. This image is not meant to be run in production, it's meant to be a 
 debugging and experimentation image.
 
 ### Versions
-* **1.6.0**: 1.6.0, alpine-1.6.0, pi-1.6.0, debug-1.6.0
+* **1.6.0**: 1.6.0, pi-1.6.0, debug-1.6.0
 
 ## Usage
 
@@ -89,8 +81,6 @@ you can use `docker logs -f <container>`
 ## Which image to use?
 
 If you are unsure which image to use, use the default `latest` image.  
-If using an Alpine-based image makes more sense in your environment - use the 
-`alpine` image.  
 In case you want to play around with the latest development build and see what 
 we are working on, use the `dev` image. Keep in mind that the `dev` image might 
 not be suitable for regular production use! 
@@ -101,12 +91,8 @@ Building the container is very simple. The only thing you need to keep in mind
 is to run the build from the project's root folder, so your build context will 
 have access to the various scripts we're using:
 ```
-docker build -t sia:1.4.7-dev-custom -f dev/Dockerfile
+docker build -t skyd:1.6.0-dev-custom -f dev/Dockerfile
 ```
-
-## More examples
-
-For more usage examples, see the blog post, ["Fun with Sia and Docker."](https://blog.spaceduck.io/sia-docker/)
 
 ## Publishing a new version
 

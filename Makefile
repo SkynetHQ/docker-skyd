@@ -33,4 +33,4 @@ ci:
 stop:
 	docker stop $(docker ps -a -q --filter "name=$(name)") && docker rm $(docker ps -a -q --filter "name=$(name)")
 
-.PHONY: all default release alpine pi dev debug ci stop dev-debian
+.PHONY: all default release pi dev debug ci stop 

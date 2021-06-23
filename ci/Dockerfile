@@ -1,5 +1,5 @@
 FROM golang:1.15
-LABEL maintainer="NebulousLabs <devs@nebulous.tech>"
+LABEL maintainer="SkynetLabs <devs@siasky.net>"
 
 ENV GO111MODULE on
 

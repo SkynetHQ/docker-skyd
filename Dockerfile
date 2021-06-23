@@ -19,8 +19,8 @@ FROM debian:stretch-slim
 LABEL maintainer="SkynetLabs <devs@siasky.net>"
 
 # NOTE: Leaving as sia and sia-data for backwards compatibility
-ARG SKYD_DIR="/sia"
-ARG SKYD_DATA_DIR="/sia-data"
+ARG SIA_DIR="/sia"
+ARG SIA_DATA_DIR="/sia-data"
 ARG SIAD_DATA_DIR="/sia-data"
 
 RUN apt-get update && apt-get install -y mime-support
@@ -32,7 +32,7 @@ RUN apt-get update && apt-get install -y mime-support
 # NOTE: Leaving as /mnt/sia for backwards compatibility
 RUN ln -s "$SIA_DATA_DIR" /mnt/sia
 
-WORKDIR "$SKYD_DIR"
+WORKDIR "$SIA_DIR"
 
 # NOTE: Leaving env vars as SIA vars until updated
 ENV SIA_DATA_DIR "$SIA_DATA_DIR"
